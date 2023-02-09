@@ -22,7 +22,7 @@ export const getPokemons = async (limit = 10, offset = 0) => {
     });
 
     const results = await Promise.all(promises);
-    console.log(results);
+    // console.log(results);
 
     return results;
   } catch (error) {

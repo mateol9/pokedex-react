@@ -1,15 +1,14 @@
 import "./App.css";
 import { searchPokemon, getPokemons } from "./components/api";
 import { useEffect } from "react";
+import PokemonCard from "./components/PokemonCard";
+import { colors } from "./utils/constants";
+import Pokedex from "./components/Pokedex";
 
 function App() {
-  useEffect(() => {
-    getPokemons(25, 0);
-  }, []);
-
   return (
-    <div className="App">
-      <h1 className="text-3xl font-bold underline">Pokemon</h1>
+    <div className="App" style={{ background: colors.background }}>
+      <Pokedex />
     </div>
   );
 }
