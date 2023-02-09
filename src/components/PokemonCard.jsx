@@ -7,7 +7,7 @@ const PokemonCard = ({ pokemon }) => {
 
   return (
     <div
-      className="w-[104px] h-[108px] flex flex-col items-center justify-between rounded-[8px] overflow-hidden relative"
+      className="w-[104px] h-[108px] flex flex-col items-center justify-between rounded-[8px] overflow-hidden relative dropShadow1"
       style={{ background: colors.white }}
     >
       <div
@@ -24,7 +24,7 @@ const PokemonCard = ({ pokemon }) => {
       </div>
       <div
         className="rounded-t-[7px] w-full pt-6 body3 text-center "
-        style={{ background: typeColors[getColor] }}
+        style={{ background: typeColors[getColor], color: colors.dark }}
       >
         <p className="px-2 pb-1">
           {pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}
