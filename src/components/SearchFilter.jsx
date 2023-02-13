@@ -1,24 +1,27 @@
 import React, { useState } from "react";
 import numberSearch from "../assets/NumberSearch.svg";
+import nameSearch from "../assets/NameSearch.svg";
 import { colors } from "../utils/constants";
 
-const SearchFilter = () => {
+const SearchFilter = ({ setFilter, filter }) => {
   const [opacity, setOpacity] = useState("none");
-  const [selected, setSelected] = useState("A");
 
   return (
     <div>
-      <div className="absolute z-50">
+      <div className="absolute ">
         <button
           className="w-8 h-8 rounded-full flex items-center justify-center innerShadow"
-          onClick={() => setOpacity(opacity === "none" ? "block" : "none")}
+          onClick={() => setOpacity("block")}
           style={{ background: colors.white }}
         >
-          <img src={numberSearch} alt="Search by number" />
+          <img
+            src={filter === "number" ? numberSearch : nameSearch}
+            alt="Search by number"
+          />
         </button>
 
         <div
-          className="w-28 h-32 dropShadow2 rounded-xl absolute top-10 right-0"
+          className="w-28 h-32 dropShadow2 rounded-xl absolute top-10 right-0 z-50"
           style={{ background: colors.primary, display: opacity }}
         >
           <div className="w-full h-full flex flex-col justify-between p-1">
@@ -32,12 +35,13 @@ const SearchFilter = () => {
             <form
               className="rounded-lg h-20 flex flex-col justify-center gap-4 px-5"
               style={{ background: colors.white }}
+              onChange={() => setOpacity("none")}
             >
               <div className="flex items-center gap-2">
                 <input
                   type="checkbox"
-                  checked={selected === "A"}
-                  onChange={() => setSelected("A")}
+                  checked={filter === "number"}
+                  onChange={() => setFilter("number")}
                   className="customCheckbox"
                 />
                 <span className="body3">Number</span>
@@ -45,8 +49,8 @@ const SearchFilter = () => {
               <div className="flex items-center gap-2">
                 <input
                   type="checkbox"
-                  checked={selected === "B"}
-                  onChange={() => setSelected("B")}
+                  checked={filter === "name"}
+                  onChange={() => setFilter("name")}
                   name="test"
                   className="customCheckbox"
                 />
@@ -58,7 +62,8 @@ const SearchFilter = () => {
       </div>
 
       <div
-        className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm z-40"
+        onClick={() => setOpacity("none")}
+        className="fixed inset-0 bg-black bg-opacity-50 z-40"
         style={{ display: opacity }}
       ></div>
     </div>

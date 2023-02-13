@@ -9,15 +9,29 @@ import SearchFilter from "./SearchFilter";
 const Pokedex = () => {
   const [pokemons, setPokemons] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [filter, setFilter] = useState("number");
+
+  console.log("render pokedex");
 
   useEffect(() => {
     const fetchPokemons = async () => {
-      const data = await getPokemons(25, 0);
+      const data = await getPokemons(27, 0);
       setPokemons(data);
       setLoading(false);
     };
     fetchPokemons();
   }, []);
+
+  const handleFilter = () => {
+    const pokemonsFiltered = pokemons.sort((a, b) => {
+      let param;
+      filter === "number" ? (param = "id") : (param = "name");
+      if (a[param] < b[param]) return -1;
+      if (a[param] > b[param]) return 1;
+      return 0;
+    });
+    return pokemonsFiltered;
+  };
 
   return (
     <div className="p-1" style={{ background: colors.primary }}>
@@ -30,10 +44,10 @@ const Pokedex = () => {
         </div>
         <div className="flex gap-4">
           <Searchbar />
-          <SearchFilter />
+          <SearchFilter setFilter={setFilter} filter={filter} />
         </div>
       </div>
-      <PokedexList pokemons={pokemons} loading={loading} />
+      <PokedexList pokemons={handleFilter()} loading={loading} />
     </div>
   );
 };

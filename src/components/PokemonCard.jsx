@@ -3,7 +3,7 @@ import { colors, typeColors } from "../utils/constants";
 
 const PokemonCard = ({ pokemon }) => {
   let getColor = pokemon.types[0].type.name;
-  console.log(pokemon);
+  // console.log(pokemon);
 
   return (
     <div
@@ -14,7 +14,7 @@ const PokemonCard = ({ pokemon }) => {
         className="w-full text-end caption pt-1 px-2"
         style={{ color: colors.medium }}
       >
-        #{pokemon.id}
+        #{pokemon.id.toString().padStart(3, 0)}
       </div>
       <div className=" w-[72px] h-[72px] absolute top-0 bottom-0 right-0 left-0 m-auto">
         <img
