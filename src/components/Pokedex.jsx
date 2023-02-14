@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getPokemons, searchPokemon } from "./api";
+import { getPokemonsById, getPokemonsByName, searchPokemon } from "./api";
 import PokedexList from "./PokedexList";
 import { colors } from "../utils/constants";
 import pokeball from "../assets/WhitePokeball.svg";
@@ -9,29 +9,40 @@ import SearchFilter from "./SearchFilter";
 const Pokedex = () => {
   const [pokemons, setPokemons] = useState([]);
   const [originalPokemons, setOriginalPokemons] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("number");
+  const [loading, setLoading] = useState(true);
+  const [notFound, setNotFound] = useState(false);
+
+  const fetchPokemonsById = async () => {
+    setLoading(true);
+    const data = await getPokemonsById(151, 0);
+    setPokemons(data);
+    setOriginalPokemons(data);
+    setLoading(false);
+    setNotFound(false);
+  };
+
+  const fetchPokemonsByName = async () => {
+    setLoading(true);
+    const data = await getPokemonsByName(151, 0);
+    setPokemons(data);
+    setOriginalPokemons(data);
+    setLoading(false);
+    setNotFound(false);
+  };
 
   useEffect(() => {
-    const fetchPokemons = async () => {
-      const data = await getPokemons(151, 0);
-      setPokemons(data);
-      setOriginalPokemons(data);
-      setLoading(false);
-    };
-    fetchPokemons();
+    fetchPokemonsById();
   }, []);
 
   const handleFilter = () => {
-    const pokemonsFiltered = [...pokemons].sort((a, b) => {
-      let param;
-      filter === "number" ? (param = "id") : (param = "name");
-      if (a[param] < b[param]) return -1;
-      if (a[param] > b[param]) return 1;
-      return 0;
-    });
-    setPokemons(pokemonsFiltered);
-    setOriginalPokemons(pokemonsFiltered);
+    if (filter === "number") {
+      fetchPokemonsById();
+      setNotFound(false);
+    } else {
+      fetchPokemonsByName();
+      setNotFound(false);
+    }
   };
 
   useEffect(() => {
@@ -39,15 +50,21 @@ const Pokedex = () => {
   }, [filter]);
 
   const handleSearch = async (pokemon) => {
+    setLoading(true);
+
+    setNotFound(false);
     if (!pokemon) {
+      setLoading(false);
       setPokemons(originalPokemons);
       return;
     }
     const result = await searchPokemon(pokemon);
     if (result) {
       setPokemons([result]);
+      setLoading(false);
     } else {
-      console.log("Pokemon no encontrado");
+      setNotFound(true);
+      setLoading(false);
     }
   };
 
@@ -65,7 +82,11 @@ const Pokedex = () => {
           <SearchFilter setFilter={setFilter} filter={filter} />
         </div>
       </div>
-      <PokedexList pokemons={pokemons} loading={loading} />
+      {notFound ? (
+        <div>Pokemon no Encontrado</div>
+      ) : (
+        <PokedexList pokemons={pokemons} loading={loading} />
+      )}
     </div>
   );
 };

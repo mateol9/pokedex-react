@@ -3,7 +3,6 @@ import { colors, typeColors } from "../utils/constants";
 
 const PokemonCard = ({ pokemon }) => {
   let getColor = pokemon.types[0].type.name;
-  // console.log(pokemon);
 
   return (
     <div
