@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import numberSearch from "../assets/NumberSearch.svg";
 import nameSearch from "../assets/NameSearch.svg";
 import { colors } from "../utils/constants";

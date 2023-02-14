@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getPokemons } from "./api";
+import { getPokemons, searchPokemon } from "./api";
 import PokedexList from "./PokedexList";
 import { colors } from "../utils/constants";
 import pokeball from "../assets/WhitePokeball.svg";
@@ -8,29 +8,47 @@ import SearchFilter from "./SearchFilter";
 
 const Pokedex = () => {
   const [pokemons, setPokemons] = useState([]);
+  const [originalPokemons, setOriginalPokemons] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("number");
 
-  console.log("render pokedex");
-
   useEffect(() => {
     const fetchPokemons = async () => {
-      const data = await getPokemons(27, 0);
+      const data = await getPokemons(151, 0);
       setPokemons(data);
+      setOriginalPokemons(data);
       setLoading(false);
     };
     fetchPokemons();
   }, []);
 
   const handleFilter = () => {
-    const pokemonsFiltered = pokemons.sort((a, b) => {
+    const pokemonsFiltered = [...pokemons].sort((a, b) => {
       let param;
       filter === "number" ? (param = "id") : (param = "name");
       if (a[param] < b[param]) return -1;
       if (a[param] > b[param]) return 1;
       return 0;
     });
-    return pokemonsFiltered;
+    setPokemons(pokemonsFiltered);
+    setOriginalPokemons(pokemonsFiltered);
+  };
+
+  useEffect(() => {
+    handleFilter();
+  }, [filter]);
+
+  const handleSearch = async (pokemon) => {
+    if (!pokemon) {
+      setPokemons(originalPokemons);
+      return;
+    }
+    const result = await searchPokemon(pokemon);
+    if (result) {
+      setPokemons([result]);
+    } else {
+      console.log("Pokemon no encontrado");
+    }
   };
 
   return (
@@ -43,11 +61,11 @@ const Pokedex = () => {
           </h1>
         </div>
         <div className="flex gap-4">
-          <Searchbar />
+          <Searchbar handleSearch={handleSearch} />
           <SearchFilter setFilter={setFilter} filter={filter} />
         </div>
       </div>
-      <PokedexList pokemons={handleFilter()} loading={loading} />
+      <PokedexList pokemons={pokemons} loading={loading} />
     </div>
   );
 };

@@ -4,9 +4,9 @@ export const searchPokemon = async (pokemon) => {
   try {
     const response = await fetch(`${baseURL}/${pokemon}`);
     const data = await response.json();
-    console.log(data);
+    return data;
   } catch (error) {
-    console.log(error);
+    console.log(`ERROR: ${error}`);
   }
 };
 

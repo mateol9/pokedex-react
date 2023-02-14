@@ -1,10 +1,23 @@
 import React from "react";
 import { useState } from "react";
 import { colors } from "../utils/constants";
-import search from "../assets/Search.svg";
+import searchLogo from "../assets/Search.svg";
 
-const Searchbar = () => {
-  const [input, setInput] = useState("");
+const Searchbar = ({ handleSearch }) => {
+  const [search, setSearch] = useState("");
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      handleSearch(search);
+    }
+  };
+
+  const handleOnChange = (e) => {
+    setSearch(e.target.value);
+    if (e.target.value.length === 0) {
+      handleSearch(null);
+    }
+  };
 
   return (
     <div
@@ -12,15 +25,14 @@ const Searchbar = () => {
       style={{ background: colors.white }}
     >
       <div className="">
-        <img src={search} alt="search icon" />
+        <img src={searchLogo} alt="search icon" />
       </div>
       <input
         type="text"
         placeholder="Search"
-        value={input}
-        onChange={(e) => {
-          setInput(e.target.value);
-        }}
+        value={search}
+        onChange={handleOnChange}
+        onKeyDown={handleKeyDown}
         className="outline-none border-none w-full body3 placeholder:text-[#666666]"
       />
     </div>
