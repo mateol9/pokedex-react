@@ -12,10 +12,11 @@ const Pokedex = () => {
   const [filter, setFilter] = useState("number");
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
+  const [page, setPage] = useState({ limit: 151, offset: 0 });
 
   const fetchPokemonsById = async () => {
     setLoading(true);
-    const data = await getPokemonsById(151, 0);
+    const data = await getPokemonsById(page.limit, page.offset);
     setPokemons(data);
     setOriginalPokemons(data);
     setLoading(false);
@@ -24,7 +25,7 @@ const Pokedex = () => {
 
   const fetchPokemonsByName = async () => {
     setLoading(true);
-    const data = await getPokemonsByName(151, 0);
+    const data = await getPokemonsByName(page.limit, page.offset);
     setPokemons(data);
     setOriginalPokemons(data);
     setLoading(false);
@@ -80,6 +81,13 @@ const Pokedex = () => {
         <div className="flex gap-4">
           <Searchbar handleSearch={handleSearch} />
           <SearchFilter setFilter={setFilter} filter={filter} />
+        </div>
+        <div
+          className="flex justify-between subtitle3"
+          style={{ color: colors.white }}
+        >
+          <button>Previus Page</button>
+          <button>Next Page</button>
         </div>
       </div>
       {notFound ? (

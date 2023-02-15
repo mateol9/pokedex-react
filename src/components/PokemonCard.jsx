@@ -3,6 +3,8 @@ import { colors, typeColors } from "../utils/constants";
 
 const PokemonCard = ({ pokemon }) => {
   let getColor = pokemon.types[0].type.name;
+  let getColors = pokemon.types.map((types) => types.type.name);
+  // console.log(pokemon);
 
   return (
     <div
@@ -22,8 +24,16 @@ const PokemonCard = ({ pokemon }) => {
         />
       </div>
       <div
-        className="rounded-t-[7px] w-full pt-6 body3 text-center "
-        style={{ background: typeColors[getColor], color: colors.dark }}
+        className="rounded-t-[7px] w-full pt-6 body3 text-center"
+        style={{
+          background: typeColors[getColor],
+          // getColors.length === 1
+          //   ? typeColors[getColors[0]]
+          //   : `linear-gradient(0deg, ${typeColors[getColors[0]]} 45%, ${
+          //       typeColors[getColors[1]]
+          //     } 55%)`,
+          color: colors.black,
+        }}
       >
         <p className="px-2 pb-1">
           {pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}

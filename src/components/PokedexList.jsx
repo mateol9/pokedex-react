@@ -11,7 +11,7 @@ const PokedexList = ({ pokemons, loading }) => {
       ) : (
         <div
           className="flex flex-wrap justify-center innerShadow py-6 px-3 rounded-[8px] gap-2 "
-          style={{ background: colors.white }}
+          style={{ background: colors.white, margin: "0 auto" }}
         >
           {pokemons.map((pokemon) => (
             <PokemonCard pokemon={pokemon} key={pokemon.id} />

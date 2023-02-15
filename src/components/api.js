@@ -31,9 +31,9 @@ export const getPokemonsById = async (limit = 10, offset = 0) => {
 
 export const getPokemonsByName = async (limit = 10, offset = 0) => {
   try {
-    const response = await fetch(`${baseURL}?limit=${limit}&offset=${offset}`);
+    const response = await fetch(`${baseURL}?limit=1008&offset=0`);
     const data = await response.json();
-    console.log(data);
+    console.log(data.results);
 
     const dataByName = data.results.sort((a, b) => {
       if (a.name < b.name) return -1;
@@ -41,13 +41,13 @@ export const getPokemonsByName = async (limit = 10, offset = 0) => {
       return 0;
     });
 
-    console.log(dataByName);
-
-    const promises = dataByName.map(async (pokemon) => {
-      const response = await fetch(pokemon.url);
-      const data = await response.json();
-      return data;
-    });
+    const promises = dataByName
+      .slice(offset, offset + limit)
+      .map(async (pokemon) => {
+        const response = await fetch(pokemon.url);
+        const data = await response.json();
+        return data;
+      });
 
     const results = await Promise.all(promises);
 
